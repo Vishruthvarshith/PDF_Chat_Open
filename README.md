@@ -26,7 +26,7 @@ A powerful FastAPI + LangChain + VectorDB application that allows users to uploa
 ```bash
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 
 # Verify Python version (3.12+ recommended)
 python --version
