@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Upload Debug Test</h1>
+
+    <div>
+        <input type="file" id="fileInput" accept=".txt,.pdf,.csv,.xlsx,.docx,.md,.json">
+        <button onclick="testUpload()">Test Upload</button>
+        <button onclick="testFetch()">Test Simple Fetch</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        function addResult(message, isSuccess = true) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'result ' + (isSuccess ? 'success' : 'error');
+            div.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            results.appendChild(div);
+            console.log(message);
+        }
+
+        async function testFetch() {
+            addResult('Testing simple fetch to /health...');
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                addResult('Health check successful: ' + JSON.stringify(data));
+            } catch (error) {
+                addResult('Health check failed: ' + error.message, false);
+            }
+        }
+
+        async function testUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                addResult('Please select a file first', false);
+                return;
+            }
+
+            addResult('Starting upload test for: ' + file.name + ' (' + file.size + ' bytes)');
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                addResult('Sending POST request to /api/v1/upload...');
+
+                const response = await fetch('/api/v1/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                addResult('Response status: ' + response.status + ' ' + response.statusText);
+                addResult('Response headers: ' + JSON.stringify(Object.fromEntries(response.headers.entries())));
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    addResult('Upload failed with error: ' + errorText, false);
+                    return;
+                }
+
+                const result = await response.json();
+                addResult('Upload successful! Result: ' + JSON.stringify(result));
+
+            } catch (error) {
+                addResult('Upload failed with exception: ' + error.message, false);
+                console.error('Full error:', error);
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', function() {
+            addResult('Page loaded, testing basic connectivity...');
+            testFetch();
+        });
+    </script>
+</body>
+</html>
