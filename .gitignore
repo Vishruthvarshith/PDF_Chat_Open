@@ -1,6 +1,7 @@
 venv/
 vector_db/
 uploads/
+app/uploads/
 __pycache__/
 *.pyc
 .env
