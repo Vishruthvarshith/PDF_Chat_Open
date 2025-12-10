@@ -1,4 +1,7 @@
 venv/
 vector_db/
-uploads/*
-!uploads/.gitkeep
+uploads/
+__pycache__/
+*.pyc
+.env
+.DS_Store
