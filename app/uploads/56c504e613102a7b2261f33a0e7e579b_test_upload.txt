@@ -1,1 +1,0 @@
-This is a comprehensive test document for upload functionality. It contains sample text to test document processing, analysis, and visualization features.

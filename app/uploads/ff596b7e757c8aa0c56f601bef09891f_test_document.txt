@@ -1,5 +1,0 @@
-This is a test document created for upload testing.
-
-It contains some sample text to verify that the upload functionality is working correctly.
-
-If you can see this message, the upload was successful!
