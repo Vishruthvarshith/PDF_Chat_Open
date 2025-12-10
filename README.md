@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ollama serve
 
 # 2. In another terminal, start the application
-source venv/bin/activate
+mac: source venv/bin/activate #for windows ./venv/Scripts/activate
 python app/main.py
 ```
 
